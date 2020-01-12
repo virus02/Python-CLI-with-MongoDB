@@ -1,5 +1,6 @@
 import argparse 
 from pymongo import MongoClient 
+from random import randint
 
 try:
 	conn = MongoClient()
@@ -11,14 +12,18 @@ db = conn.test
 collection = db.mycollection
 
 def insert(args):
-	name = raw_input("Enter a name : ")
-	age = int(raw_input("Enter an age : "))
-	loc = raw_input("Enter a location : ")
+	try:
+		rnum = randint(0,999)
+		name = raw_input("Enter a name : ")
+		age = int(raw_input("Enter an age : "))
+		loc = raw_input("Enter a location : ")
 
-	emp_det = {"name":name,"age":age,"loc":loc}
-	rec_id1 = collection.insert_one(emp_det) 
+		emp_det = {"id":rnum,"name":name,"age":age,"loc":loc}
+		rec_id1 = collection.insert_one(emp_det) 
 
-	print "Record Inserted"
+		print "Record Inserted"
+	except:
+		print "Please enter proper inputs"
 
 def show(args):
 	cursor = collection.find()
@@ -30,11 +35,21 @@ def show(args):
 
 def remove(args):
 	cursor = collection.find()
-	n = raw_input("Enter name : ")
-	for rec in cursor:
-		if rec['name'] == n:
-			collection.remove({"name":n})
-			print "Record deleted!!"
+	count = cursor.count()
+	if count != 0:
+		try:
+			n = int(raw_input("Enter ID : "))
+			for rec in cursor:
+				if rec['id'] == n:
+					collection.remove({"id":n})
+					print "Record deleted!!"
+					count = count + 1
+			if cursor.count() == count:
+				print "Could not find the record !!"
+		except :
+			print "Please enter ID"
+	else:
+		print "There is no record !!"
 	
 def deleteAll(args):
 	cursor = collection.find().count()
@@ -45,10 +60,10 @@ def deleteAll(args):
 		print "There is no record !!"
 
 parser = argparse.ArgumentParser(description = "Assignment Program")   
-parser.add_argument("-i","--insert") 
-parser.add_argument("-s","--show") 
-parser.add_argument("-r","--remove")
-parser.add_argument("-dAll","--deleteAll")
+parser.add_argument("-i","--insert",help = "Enter your name, age and location") 
+parser.add_argument("-s","--show", help="It displays the record") 
+parser.add_argument("-r","--remove",help="It deletes the record of perticular ID")
+parser.add_argument("-dAll","--deleteAll",help="It deletes all the records")
 args = parser.parse_args() 
 
 if args.insert != None:
