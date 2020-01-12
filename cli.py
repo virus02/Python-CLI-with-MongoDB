@@ -32,6 +32,28 @@ def show(args):
 	else:
 		for record in cursor:
 			print record
+		print "--------------------------"
+		
+		#finding particular values and selecting fields
+		choice = raw_input("Enter F to find all the records which contain a particular value OR S to find perticular field : ")
+		
+		if (choice.upper() == "F"):
+			value = raw_input("Enter a field to check the value : ")
+			frecords = collection.find({}, {value:1, "_id":0})
+			for frecord in frecords:
+				print frecord
+		elif (choice.upper() == "S"):
+			cur = collection.find()
+			field = raw_input("Enter field: ")
+			value = raw_input("Enter value :  ")
+			try:
+				for rec in cur:
+					if rec[field] == value:
+						print rec
+			except:
+				print "There is no such record !!"
+		else:
+			print "Please enter F or S according to your need"
 
 def remove(args):
 	cursor = collection.find()
