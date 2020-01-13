@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import argparse 
 from pymongo import MongoClient 
 from random import randint
