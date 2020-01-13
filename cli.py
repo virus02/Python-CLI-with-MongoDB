@@ -46,13 +46,22 @@ def show(args):
 		elif (choice.upper() == "S"):
 			cur = collection.find()
 			field = raw_input("Enter field: ")
-			value = raw_input("Enter value :  ")
-			try:
-				for rec in cur:
-					if rec[field] == value:
-						print rec
-			except:
-				print "There is no such record !!"
+			if field == "id" or field == "age":
+				try:
+					value = int(raw_input("Enter value :  "))
+					for rec in cur:
+						if rec[field] == value:
+							print rec
+				except:
+					print "There is no such record !!"
+			else:
+				try:
+					value = raw_input("Enter value :  ")
+					for rec in cur:
+						if rec[field] == value:
+							print rec
+				except:
+					print "There is no such record !!"
 		else:
 			print "Please enter F or S according to your need"
 
