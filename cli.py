@@ -7,8 +7,9 @@ try:
 	print "Database Connected Successfully :)"
 except:
 	print "Database Connection Failed !!"
-
+#please change the db name(test) to your db name
 db = conn.test
+#please change collection(mycollection) to your collection name
 collection = db.mycollection
 
 def insert(args):
